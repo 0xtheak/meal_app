@@ -13,8 +13,8 @@ Welcome to the Meal App! This web application allows users to search for various
 
 ## Features
 - Search for meals by name
-- View meal details and ingredients
-- Mark meals as favorites
+- View meal details and recipes
+- Mark meals as favourites
 - Responsive design for all devices
 
 ## Getting Started
@@ -38,8 +38,8 @@ css
 1. Open the `index.html` file in your web browser.
 2. Enter a meal name in the search bar and click the "Search" button.
 3. The app will display a list of meals matching the search query.
-4. Click on a meal to view more details and ingredients.
-5. You can mark meals as favorites by clicking the "More Details" button.
+4. Click on a meal to view more details.
+5. You can mark meals as favourites by clicking the heart icon.
 
 ## Technologies Used
 - HTML
