@@ -1,211 +1,208 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-  }
-  
-  /* Food Search Section */
-  #food-data-search {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  /* Search Bar */
-  #search-bar-container {
-    display: flex;
-    align-items: center;
-    max-width: 400px;
-    margin: 0 auto;
-    border: 1px solid #333;
-    overflow: hidden;
-  }
-  
-  #search-meal {
-    flex: 1;
-    font-size: 20px;
-    padding: 10px;
-    border: none;
-    background-color: #f5f5f5;
-    color: #333;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  #search-meal:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 128, 0, 0.4);
-  }
-  
-  button {
-    font-size: 20px;
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #444;
-  }
+/* Food Search Section */
+#food-data-search {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Search Bar */
+#search-bar-container {
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+#search-meal {
+  flex: 1;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  background-color: #f5f5f5;
+  color: #333;
+  transition: box-shadow 0.3s ease;
+  outline: none;
+}
+
+#search-meal:focus {
+  box-shadow: 0 0 5px rgba(0, 128, 0, 0.4);
+}
+
+button {
+  font-size: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #444;
+}
 
 
 /* Search Suggestions */
 #search-suggestions {
-    max-width: 400px;
-    margin: 0 auto;
-    border: 1px solid #333;
-    overflow: hidden;
-  }
-  
-  .suggestion {
-    padding: 10px;
-    cursor: pointer;
-    text-align: left;
-    transition: background-color 0.3s ease;
-  }
-  
-  .suggestion:hover {
-    background-color: #f0f0f0;
-  }
-  
-  
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+.suggestion {
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.suggestion:hover {
+  background-color: #f0f0f0;
+}
 
 
 /* Foods List */
 #foods-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  justify-content: center;
 }
 
 #foods-list ul {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #foods-list ul li {
-    list-style: none;
-    margin: 10px;
-    padding: 12px;
-    width: 300px;
-    max-width: calc(100% - 20px); /* Ensures the items don't overflow container */
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  list-style: none;
+  margin: 10px;
+  padding: 12px;
+  width: 300px;
+  max-width: calc(100% - 20px); /* Ensures the items don't overflow container */
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #foods-list ul li:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #foods-list ul li img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 4px 4px 0 0;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px 4px 0 0;
 }
-#foods-list ul li p {
-    color: black;
-}
+
 
 /* More Details section */
 .like-and-details {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* more details button */
 .more-details-btn {
-    padding: 8px 15px;
-    background-color: #fff;
-    color: #333;
-    border: 2px solid #333;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px 15px;
+  background-color: #fff;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .more-details-btn:hover {
-    background-color: #333;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #333;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* like button */
-.fa-heart-o {
-    font-size: 20px;
+/* More Details button on active state (when clicked) */
+.more-details-btn:active {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+
+/* like button */
+.fa-heart-o,
+.fa-heart {
+  font-size: 20px;
+}
+
 .fa-heart-o:hover {
-    color: red;
+  color: red;
 }
 
 .fa-heart {
-    color: red;
+  color: red;
 }
+
 
 /* Media Queries for Responsiveness */
 @media screen and (max-width: 768px) {
-    /* Adjust styles for smaller screens */
-    .container {
-        flex-direction: column;
-    }
+  /* Adjust styles for smaller screens */
+  .container {
+    flex-direction: column;
+  }
 
-    .logo img {
-        margin-bottom: 10px;
-    }
+  .logo img {
+    margin-bottom: 10px;
+  }
 
-    nav {
-        margin-top: 20px;
-    }
+  nav {
+    margin-top: 20px;
+  }
 
-    #food-data-search {
-        flex-direction: column;
-    }
+  #food-data-search {
+    flex-direction: column;
+  }
 
-    #search-meal {
-        width: 100%;
-        max-width: none;
-    }
+  #search-meal {
+    width: 100%;
+    max-width: none;
+  }
 
-    #foods-list ul li {
-        width: 100%;
-    }
+  #foods-list ul li {
+    width: 100%;
+  }
 }
-
 
 /* css loader */
 .loader {
-    border: 5px solid #f3f3f3; 
-    border-top: 5px solid #333333; 
-    border-radius: 50%; 
-    width: 50px; 
-    height: 50px; 
-    margin: 25px; 
-    animation: spin 2s linear infinite; 
-    text-align: center; 
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    display: none; 
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
-  }
-  
+  border: 5px solid #f3f3f3; 
+  border-top: 5px solid #333333; 
+  border-radius: 50%; 
+  width: 50px; 
+  height: 50px; 
+  margin: 25px; 
+  animation: spin 2s linear infinite; 
+  text-align: center; 
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  display: none; 
+}
 
+@keyframes spin {
+  0% { transform: rotate(0deg); } 
+  100% { transform: rotate(360deg); } 
+}
 
 /* Style the meal details container */
 .meals-detail {
@@ -215,6 +212,7 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 10px;
+  text-align: left;
 }
 
 .meals-detail img {
@@ -241,4 +239,88 @@ body {
 
 .meals-detail a:hover {
   text-decoration: underline;
+}
+
+/* Favourite Foods Section Styles */
+#favourites-food-section {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+#favourites-food-section ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#favourite-foods-list li {
+  list-style: none;
+  margin: 10px;
+  padding: 12px;
+  width: 300px;
+  max-width: calc(100% - 20px); /* Ensures the items don't overflow container */
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#favourite-foods-list li:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#favourite-foods-list li img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px 4px 0 0;
+}
+
+/* Like and Details Section */
+.like-and-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* more details button */
+.more-details-btn {
+  padding: 8px 15px;
+  background-color: #fff;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.more-details-btn:hover {
+  background-color: #333;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* More Details button on active state (when clicked) */
+.more-details-btn:active {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Heart Icon */
+.fa-heart {
+  font-size: 20px;
+  color: #ff0000;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.fa-heart:hover {
+  color: #c80000;
 }

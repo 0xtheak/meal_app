@@ -1,32 +1,39 @@
+"use strict"
 const searchMealDiv = document.getElementById('search-meal');
 const foodSearchList = document.getElementById('food-search-list');
-const foodLikeButton = document.getElementsByClassName('fa-heart-o');
-const loader = document.getElementsByClassName('loader')[0];
 const foodDataSearch = document.getElementById('food-data-search');
-let favouriteFoodList = [];
+const suggestionsContainer = document.getElementById('search-suggestions');
+const loader = document.querySelector('.loader');
+let favouriteFoodList = window.localStorage.getItem("favouritesFood")?JSON.parse(localStorage.getItem('favouritesFood') ):[];
 
+
+// data fetching urls
 const categories_food_url = "https://www.themealdb.com/api/json/v1/1/categories.php";
-const foodSearchUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s="
+const foodSearchUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 const search_by_id = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
 
-// retrieve data using fetch function and return promise data
-function fetchUrl(url){
-  return fetch(url)
-    .then(response => response.json())
-    .then(data => data)
+// Retrieve data using fetch function and return promise data
+async function fetchUrl(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error('Error fetching data:', error);
+  }
 }
 
-// return food suggestion list
+// Get food suggestions based on search input
 async function getSuggestion() {
   const suggestDataList = await fetchUrl(foodSearchUrl + searchMealDiv.value);
-  return suggestDataList?.meals;
+  return suggestDataList?.meals || [];
 }
 
-// food suggestion for search bar
+// Show search suggestions as user types
 async function showSearchSuggestions() {
-  const searchInput = document.getElementById('search-meal');
-  const searchValue = searchInput.value.trim().toLowerCase();
-  const suggestionsContainer = document.getElementById('search-suggestions');
+  const searchValue = searchMealDiv.value.trim().toLowerCase();
   suggestionsContainer.innerHTML = '';
 
   if (searchValue === '') {
@@ -34,133 +41,118 @@ async function showSearchSuggestions() {
   }
 
   const suggestions = await getSuggestion();
-
-  if (suggestions) {
-    const matchingSuggestions = suggestions.filter(suggestion => suggestion.strMeal.toLowerCase().includes(searchValue));
-
-    matchingSuggestions.forEach(suggestion => {
-      const suggestionElement = document.createElement('div');
-      suggestionElement.textContent = suggestion.strMeal;
-      suggestionElement.classList.add('suggestion');
-      suggestionElement.addEventListener('click', () => {
-        searchInput.value = suggestion.strMeal;
-        suggestionsContainer.innerHTML = '';
-      });
-      suggestionsContainer.appendChild(suggestionElement);
-    });
-  }
+  suggestionsContainer.innerHTML = suggestions
+    .filter(suggestion => suggestion.strMeal.toLowerCase().includes(searchValue))
+    .map(suggestion => `<div class="suggestion" onclick="selectSuggestion('${suggestion.strMeal}')">${suggestion.strMeal}</div>`)
+    .join('');
 }
 
+// Handle selecting a suggestion from search
+function selectSuggestion(mealName) {
+  document.getElementById('search-suggestions').style.display = "block";
+  searchMealDiv.value = mealName;
+  suggestionsContainer.innerHTML = '';
+  searchMeal();
+}
 
+// Add or remove meal from favorite list
 function addToFavList(id) {
-
-  if (window.localStorage.getItem("favouritesFood")) {
-    favouriteFoodList = JSON.parse(window.localStorage.getItem("favouritesFood"));
+  if (favouriteFoodList?.includes(id)) {
+    favouriteFoodList = favouriteFoodList.filter(mealId => mealId !== id);
+  } else {
+    favouriteFoodList.push(id);
   }
-
-  // if the id not present in the existing array add it;
-  const index = favouriteFoodList.indexOf(id);
-  if (index == -1) {
-    favouriteFoodList.push(id); 
-  }
-  // Store the updated array in localStorage
-  window.localStorage.setItem("favouritesFood", JSON.stringify(favouriteFoodList)); 
+  localStorage.setItem('favouritesFood', JSON.stringify(favouriteFoodList));
+  updateLikeBtn(id);
 }
 
-function checkFavourite(id){
-  console.log(id);
-  const index = favouriteFoodList.indexOf(id);
-  if (index !== -1) {
-    let likedBtn = document.querySelector('#'+id);
-    console.log(likedBtn);
+// Update like button class
+function updateLikeBtn(id) {
+  const likedBtn = document.getElementById(id);
+  likedBtn.classList.toggle('fa-heart');
+  likedBtn.classList.toggle('fa-heart-o');
+}
+
+// Check if a meal is in the favorite list
+function checkFavourite(id) {
+  favouriteFoodList = window.localStorage.getItem("favouritesFood")?JSON.parse(localStorage.getItem('favouritesFood') ):[];
+
+  return favouriteFoodList.includes(id);
+}
+
+// Show detailed meal information
+async function showDetailed(id) {
+  try {
+    foodSearchList.innerHTML = '';
+    loader.style.display = 'block';
+    foodDataSearch.style.display = 'none';
+
+    const data = await fetchUrl(search_by_id + id);
+    if (data.meals && data.meals.length > 0) {
+      const meal = data.meals[0];
+      const div = document.createElement('div');
+      div.setAttribute('class', 'meals-detail');
+      div.innerHTML = `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+        <p>Category : ${meal.strCategory} </p>
+        <p>Meal name : ${meal.strMeal} </p>
+        <p>Meal recipe : ${meal.strInstructions} </p>
+        <div class="like-and-details">
+          <a href="${meal.strYoutube}" target="_blank">Meal recipe instruction video</a>
+          <i class="fa ${checkFavourite(meal.idMeal) ? 'fa-heart' : 'fa-heart-o'}" id="${meal.idMeal}" onclick="addToFavList(${meal.idMeal})"> </i>
+        </div>
+      `;
+      foodDataSearch.innerHTML = '';
+      foodDataSearch.appendChild(div);
+    } else {
+      console.log('Meal not found');
+    }
+
+    loader.style.display = 'none';
+    foodDataSearch.style.display = 'block';
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
 }
 
-
-// meal details page
-function showDetailed(id) {
-  foodSearchList.innerHTML = '';
-  loader.style.display = 'block';
-  foodDataSearch.style.display = 'none';
-
-  fetchUrl(search_by_id + id)
-    .then((data) => {
-      if (data.meals && data.meals.length > 0) {
-        const meal = data.meals[0];
-        console.log(meal);
-        let div = document.createElement('div');
-        div.setAttribute('class', 'meals-detail');
-        div.innerHTML = `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-                        <p>Category : ${meal.strCategory} </p>
-                        <p>Meal name : ${meal.strMeal} </p>
-                        <p>Meal recipe : ${meal.strInstructions} </p>
-                        <div class="like-and-details">
-                        <a href="${meal.strYoutube}" target="_blank">Meal recipe instruction video</a>
-                        <i class="fa fa-heart-o" onload="checkFavourite(${meal.idMeal})" onClick="addToFavList(${meal.idMeal})"> </i>
-                        </div>
-        `;
-        document.body.appendChild(div); 
-        loader.style.display = 'none';
-      } else {
-        loader.style.display = 'none';
-        // Handle the case when data is empty or not found.
-        console.log('Meal not found');
-      }
-    })
-    .catch((error) => {
-      loader.style.display = 'none';
-      console.error('Error fetching data:', error);
-    });
-}
-
-
-
-
-// showing searched with in the list
-function searchMeal() {
-  foodSearchList.innerHTML = '';
-  if (searchMealDiv.value !== "") {
-    loader.style.display = "block";
-    fetchUrl(foodSearchUrl + searchMealDiv.value)
-      .then((data) => {
-        if(data?.meals?.length>0){
-          let ul = document.createElement('ul');
-        ul.setAttribute("id", "searched-food");
-        data?.meals?.forEach((meal) => {
+// Search for meals
+async function searchMeal() {
+  try {
+    foodSearchList.innerHTML = '';
+    if (searchMealDiv.value !== '') {
+      document.getElementById('search-suggestions').style.display = "none";
+      loader.style.display = 'block';
+      let data = await fetchUrl(foodSearchUrl + searchMealDiv.value);
+      if (data?.meals?.length > 0) {
+        let ul = document.createElement('ul');
+        ul.setAttribute('id', 'searched-food');
+        data.meals.forEach(meal => {
           let li = document.createElement('li');
-          li.setAttribute("id", meal.idMeal);
           li.innerHTML = `<img src="${meal.strMealThumb}">
-                          <p>Category : ${meal.strCategory} </p>
-                          <p>Meal name : ${meal.strMeal} </p>
-                          <div class="like-and-details">
-                            <div class="more-details-btn" onClick="showDetailed(${meal.idMeal})"  >
-                              <p>More details</p>
-                            </div>
-                            <i class="fa fa-heart-o" onload="checkFavourite(${meal.idMeal})" onClick="addToFavList(${meal.idMeal})"></i>
-                          </div>`;
+            <p class="text">Category : ${meal.strCategory} </p>
+            <p class="text">Meal name : ${meal.strMeal} </p>
+            <div class="like-and-details">
+              <div class="more-details-btn" onclick="showDetailed(${meal.idMeal})" >
+                <p>More details</p>
+              </div>
+              <i class="fa ${checkFavourite(meal.idMeal) ? 'fa-heart' : 'fa-heart-o'}" id="${meal.idMeal}" onclick="addToFavList(${meal.idMeal})"></i>
+            </div>`;
           ul.appendChild(li);
         });
         foodSearchList.appendChild(ul);
-        // Hide the loader once data is loaded
-        loader.style.display = "none"; 
-        }else {
-           // Hide the loader once data is loaded
-          loader.style.display = "none";
-          foodSearchList.innerHTML = "<p>404 No results found!</p>";
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        // Hide the loader in case of an error
-        loader.style.display = "none"; 
-      });
+      } else {
+        foodSearchList.innerHTML = '<p>404 No results found!</p>';
+      }
+      loader.style.display = 'none';
+    }
+  } catch (error) {
+    console.log(error);
+    loader.style.display = 'none';
   }
 }
-  
 
-// onload page search
-window.addEventListener("load", ()=> {
-  if(searchMealDiv.value !=""){
+// Onload page search
+window.addEventListener('load', () => {
+  if (searchMealDiv.value !== '') {
     searchMeal();
   }
 });
