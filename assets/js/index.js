@@ -1,8 +1,9 @@
 const searchMealDiv = document.getElementById('search-meal');
 const foodSearchList = document.getElementById('food-search-list');
-const randomFoodsList = document.getElementById('random-foods-list');
 const foodLikeButton = document.getElementsByClassName('fa-heart-o');
 const loader = document.getElementsByClassName('loader')[0];
+const foodDataSearch = document.getElementById('food-data-search');
+let favouriteFoodList = [];
 
 const categories_food_url = "https://www.themealdb.com/api/json/v1/1/categories.php";
 const foodSearchUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s="
@@ -10,9 +11,9 @@ const search_by_id = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
 
 // retrieve data using fetch function and return promise data
 function fetchUrl(url){
-	return fetch(url)
-		.then(response => response.json())
-		.then(data => data)
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => data)
 }
 
 // return food suggestion list
@@ -51,9 +52,6 @@ async function showSearchSuggestions() {
 }
 
 
-
-let favouriteFoodList = [];
-
 function addToFavList(id) {
 
   if (window.localStorage.getItem("favouritesFood")) {
@@ -65,9 +63,8 @@ function addToFavList(id) {
   if (index == -1) {
     favouriteFoodList.push(id); 
   }
-
-  
-  window.localStorage.setItem("favouritesFood", JSON.stringify(favouriteFoodList)); // Store the updated array in localStorage
+  // Store the updated array in localStorage
+  window.localStorage.setItem("favouritesFood", JSON.stringify(favouriteFoodList)); 
 }
 
 function checkFavourite(id){
@@ -80,17 +77,42 @@ function checkFavourite(id){
 }
 
 
-
-function showDetailed(id){
+// meal details page
+function showDetailed(id) {
   foodSearchList.innerHTML = '';
-  loader.style.display = "block";
-  fetchUrl(search_by_id+id)
+  loader.style.display = 'block';
+  foodDataSearch.style.display = 'none';
+
+  fetchUrl(search_by_id + id)
     .then((data) => {
-      let div = document.createElement('div');
-
+      if (data.meals && data.meals.length > 0) {
+        const meal = data.meals[0];
+        console.log(meal);
+        let div = document.createElement('div');
+        div.setAttribute('class', 'meals-detail');
+        div.innerHTML = `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                        <p>Category : ${meal.strCategory} </p>
+                        <p>Meal name : ${meal.strMeal} </p>
+                        <p>Meal recipe : ${meal.strInstructions} </p>
+                        <div class="like-and-details">
+                        <a href="${meal.strYoutube}" target="_blank">Meal recipe instruction video</a>
+                        <i class="fa fa-heart-o" onload="checkFavourite(${meal.idMeal})" onClick="addToFavList(${meal.idMeal})"> </i>
+                        </div>
+        `;
+        document.body.appendChild(div); 
+        loader.style.display = 'none';
+      } else {
+        loader.style.display = 'none';
+        // Handle the case when data is empty or not found.
+        console.log('Meal not found');
+      }
+    })
+    .catch((error) => {
+      loader.style.display = 'none';
+      console.error('Error fetching data:', error);
     });
-
 }
+
 
 
 
@@ -108,7 +130,8 @@ function searchMeal() {
           let li = document.createElement('li');
           li.setAttribute("id", meal.idMeal);
           li.innerHTML = `<img src="${meal.strMealThumb}">
-                          <p>category : ${meal.strCategory} </p>
+                          <p>Category : ${meal.strCategory} </p>
+                          <p>Meal name : ${meal.strMeal} </p>
                           <div class="like-and-details">
                             <div class="more-details-btn" onClick="showDetailed(${meal.idMeal})"  >
                               <p>More details</p>
@@ -133,48 +156,11 @@ function searchMeal() {
       });
   }
 }
-	
-
-
-
-
-// showing search suggestion
-searchMealDiv.addEventListener("input", (e) => {
-	// console.log('input has been changed');
   
+
+// onload page search
+window.addEventListener("load", ()=> {
+  if(searchMealDiv.value !=""){
+    searchMeal();
+  }
 });
-
-
-// foods categories
-// window.addEventListener("load", ()=> {
-// 	console.log("page loaded")
-// 	let foodData = fetchUrl(categories_food_url);
-// 	foodData.then((data) => {
-// 		if(data){
-// 			let ul = document.createElement('ul');
-// 			ul.setAttribute("id", "foods-categories");
-// 			data?.categories?.forEach((cate) => {
-// 				let li = document.createElement('li');
-// 				li.setAttribute("id", cate.idCategory);
-// 				li.innerHTML = `<img src="${cate.strCategoryThumb}">
-// 								<p>category : ${cate.strCategory} </p>
-//                 <div class="like-and-details">
-//                   <div class="more-details-btn">
-//                     <p>More details</p>
-//                   </div>
-//                   <i class="fa fa-heart-o"></i>
-//                 </div>
-// 								<!-- <p >Description: ${cate.strCategoryDescription}</p> -->`
-// 				ul.appendChild(li);
-// 			})
-// 			randomFoodsList.appendChild(ul);
-// 		}
-// 	});
-// });
-
-  window.addEventListener("load", ()=> {
-    if(searchMealDiv.value !=""){
-      searchMeal();
-    }
-  });
-

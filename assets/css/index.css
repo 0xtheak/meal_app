@@ -205,3 +205,40 @@ body {
     100% { transform: rotate(360deg); } 
   }
   
+
+
+/* Style the meal details container */
+.meals-detail {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.meals-detail img {
+  display: block;
+  width: 300px;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.meals-detail p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.meals-detail a {
+  display: block;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.meals-detail a:hover {
+  text-decoration: underline;
+}
