@@ -4,6 +4,7 @@ const foodSearchList = document.getElementById('food-search-list');
 const foodDataSearch = document.getElementById('food-data-search');
 const suggestionsContainer = document.getElementById('search-suggestions');
 const loader = document.querySelector('.loader');
+const favFoodLists = document.getElementById("favourite-foods-list");
 let favouriteFoodList = window.localStorage.getItem("favouritesFood")?JSON.parse(localStorage.getItem('favouritesFood') ):[];
 
 
@@ -71,13 +72,18 @@ function updateLikeBtn(id) {
   const likedBtn = document.getElementById(id);
   likedBtn.classList.toggle('fa-heart');
   likedBtn.classList.toggle('fa-heart-o');
+  if(likedBtn.classList.contains('fa-heart')){
+    alert('meal added to favourites list');
+  }else {
+    alert('meal removed from favourites list');
+  }
 }
 
 // Check if a meal is in the favorite list
 function checkFavourite(id) {
   favouriteFoodList = window.localStorage.getItem("favouritesFood")?JSON.parse(localStorage.getItem('favouritesFood') ):[];
 
-  return favouriteFoodList.includes(id);
+  return favouriteFoodList?.indexOf(parseInt(id))==-1?false:true;
 }
 
 // Show detailed meal information
@@ -85,6 +91,7 @@ async function showDetailed(id) {
   try {
     foodSearchList.innerHTML = '';
     loader.style.display = 'block';
+    favFoodLists.style.display = 'none';
     foodDataSearch.style.display = 'none';
 
     const data = await fetchUrl(search_by_id + id);
@@ -147,6 +154,46 @@ async function searchMeal() {
   } catch (error) {
     console.log(error);
     loader.style.display = 'none';
+  }
+}
+
+// render favourites food list
+async function renderFavouriteMeals(){
+  try{
+    favFoodLists.style.display = 'block';
+    foodSearchList.style.display = 'none';
+    foodDataSearch.style.display = 'none';
+    favFoodLists.innerHTML = '';
+      if(favouriteFoodList){
+          let ul = document.createElement('ul');
+          ul.setAttribute('id', 'fav-food');
+          favouriteFoodList.forEach( async (id) => {
+              let data = await fetchUrl(search_by_id + id);
+              if(data){
+                  console.log(data);
+                  let meal = data.meals[0];
+                  let li = document.createElement('li');
+                  li.innerHTML = `<img src="${meal.strMealThumb}">
+                                  <p class="text">Category : ${meal.strCategory} </p>
+                                  <p class="text">Meal name : ${meal.strMeal} </p>
+                                  <div class="like-and-details">
+                                    <div class="more-details-btn" onclick="showDetailed(${meal.idMeal})" >
+                                      <p>More details</p>
+                                    </div>
+                                    <i class="fa ${checkFavourite(meal.idMeal) ? 'fa-heart' : 'fa-heart-o'}" id="${meal.idMeal}" onclick="addToFavList(${meal.idMeal})"></i>
+                                  </div>`;
+            ul.appendChild(li);
+              favFoodLists.appendChild(ul);
+        }     
+          });
+      }else {
+        let p = document.createElement('p');
+        p.innerText = "Current there is no favourites meal!";
+        document.body.appendChild(p);
+      }
+
+  }catch(error){
+      console.log(error);
   }
 }
 
