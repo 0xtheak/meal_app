@@ -25,21 +25,22 @@
         </div>
     </header>
 
+	<!-- meal search section -->
 	<div id="food-data-search">
-		<div id="right">
-			<input type="text" id="search-meal" name="search-meal">
-			<button onclick="searchMeal()">Search</button>
-			
-		
+		<div id="search-bar-container">
+		  <input type="text" id="search-meal" name="search-meal" placeholder="Search for meals" oninput="showSearchSuggestions()">
+		  <button onclick="searchMeal()">Search</button>
 		</div>
-		
-	</div>
+		<div id="search-suggestions"></div>
+	  </div>
+
+<!-- meal searched rendering section -->
 	<section id="foods-list">
 		<div id="food-search-list"></div>
 	</section>
 
 		
-		
+	<div class="loader"></div>
 	
 	<script type="text/javascript" src="assets/js/index.js"></script>
 	<script src="https://kit.fontawesome.com/9381d3aeec.js" crossorigin="anonymous"></script>
