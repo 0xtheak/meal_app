@@ -23,15 +23,11 @@ Follow the instructions below to get a copy of the project up and running on you
 ### Installation
 1. Clone the repository:
 
-git clone https://github.com/0xtheak/meal_app.git
-
-css
+  git clone https://github.com/0xtheak/meal_app.git
 
 2. Navigate to the project directory:
 
-cd meal-app
-
-css
+  cd meal-app
 
 
 ### Usage
