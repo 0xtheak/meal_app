@@ -28,8 +28,11 @@ async function fetchUrl(url) {
 
 // Get food suggestions based on search input
 async function getSuggestion() {
-  document.getElementById('search-suggestions').style.display = "block";
   const suggestDataList = await fetchUrl(foodSearchUrl + searchMealDiv.value);
+  if(suggestDataList?.meals==null){
+    document.getElementById('search-suggestions').style.display = "none";
+    return [];
+  }
   return suggestDataList?.meals || [];
 }
 
@@ -39,18 +42,22 @@ async function showSearchSuggestions() {
   suggestionsContainer.innerHTML = '';
 
   if (searchValue === '') {
+    document.getElementById('search-suggestions').style.display = "none";
     return;
   }
 
+  
   const suggestions = await getSuggestion();
   suggestionsContainer.innerHTML = suggestions
     .filter(suggestion => suggestion.strMeal.toLowerCase().includes(searchValue))
     .map(suggestion => `<div class="suggestion" onclick="selectSuggestion('${suggestion.strMeal}')">${suggestion.strMeal}</div>`)
     .join('');
+    document.getElementById('search-suggestions').style.display = "block";
 }
 
 // Handle selecting a suggestion from search
 function selectSuggestion(mealName) {
+  
   document.getElementById('search-suggestions').style.display = "block";
   searchMealDiv.value = mealName;
   suggestionsContainer.innerHTML = '';
@@ -59,7 +66,7 @@ function selectSuggestion(mealName) {
 
 // Add or remove meal from favorite list
 function addToFavList(id) {
-  if (favouriteFoodList?.includes(id)) {
+  if (favouriteFoodList?.includes(parseInt(id))) {
     favouriteFoodList = favouriteFoodList.filter(mealId => mealId !== id);
   } else {
     favouriteFoodList.push(id);
@@ -106,7 +113,7 @@ async function showDetailed(id) {
         <p>Meal recipe : ${meal.strInstructions} </p>
         <div class="like-and-details">
           <a href="${meal.strYoutube}" target="_blank">Meal recipe instruction video</a>
-          <i class="fa ${checkFavourite(meal.idMeal) ? 'fa-heart' : 'fa-heart-o'}" id="${meal.idMeal}" onclick="addToFavList(${meal.idMeal})"> </i>
+          <i class="fa ${checkFavourite(parseInt(meal.idMeal)) ? 'fa-heart' : 'fa-heart-o'}" id="${meal.idMeal}" onclick="addToFavList(${parseInt(meal.idMeal)})"> </i>
         </div>
       `;
       foodDataSearch.innerHTML = '';

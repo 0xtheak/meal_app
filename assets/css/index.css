@@ -12,6 +12,7 @@ body {
 
 /* Search Bar */
 #search-bar-container {
+  position: relative;
   display: flex;
   align-items: center;
   max-width: 400px;
@@ -56,13 +57,18 @@ button:hover {
   margin: 0 auto;
   border: 1px solid #333;
   overflow: hidden;
-  position: relative;
-  border-top: 0px;
-  width: 500px;
+  position: inherit;
+  width: 100%; 
   background-color: #333333;
   color: white;
-
+  z-index: 9999;
+  display: none; 
 }
+
+#search-bar-container:hover #search-suggestions {
+  display: block; 
+}
+
 
 .suggestion {
   padding: 10px;
