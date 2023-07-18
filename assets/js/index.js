@@ -108,8 +108,8 @@ async function showDetailed(id) {
       const div = document.createElement('div');
       div.setAttribute('class', 'meals-detail');
       div.innerHTML = `<img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-        <p>Category : ${meal.strCategory} </p>
-        <p>Meal name : ${meal.strMeal} </p>
+        <p class="text"><strong>Meal name</strong> : ${meal.strMeal} </p>
+        <p class="text"><strong>Category</strong> : ${meal.strCategory} </p>
         <p>Meal recipe : ${meal.strInstructions} </p>
         <div class="like-and-details">
           <a href="${meal.strYoutube}" target="_blank">Meal recipe instruction video</a>
@@ -143,8 +143,8 @@ async function searchMeal() {
         data.meals.forEach(meal => {
           let li = document.createElement('li');
           li.innerHTML = `<img src="${meal.strMealThumb}">
-            <p class="text">Category : ${meal.strCategory} </p>
-            <p class="text">Meal name : ${meal.strMeal} </p>
+            <p class="text"><strong>Meal name</strong> : ${meal.strMeal} </p>
+            <p class="text"><strong>Category</strong> : ${meal.strCategory} </p>
             <div class="like-and-details">
               <div class="more-details-btn" onclick="showDetailed(${meal.idMeal})" >
                 <p>More details</p>
@@ -182,8 +182,9 @@ async function renderFavouriteMeals(){
                   let meal = data.meals[0];
                   let li = document.createElement('li');
                   li.innerHTML = `<img src="${meal.strMealThumb}">
-                                  <p class="text">Category : ${meal.strCategory} </p>
-                                  <p class="text">Meal name : ${meal.strMeal} </p>
+                                  <p class="text"><strong>Meal name</strong> : ${meal.strMeal} </p>
+                                  <p class="text"><strong>Category</strong> : ${meal.strCategory} </p>
+                                  
                                   <div class="like-and-details">
                                     <div class="more-details-btn" onclick="showDetailed(${meal.idMeal})" >
                                       <p>More details</p>
@@ -197,7 +198,7 @@ async function renderFavouriteMeals(){
           });
       }else {
         let p = document.createElement('p');
-        p.innerText = "Current there is no favourites meal!";
+        p.innerText = "Currently there is no favourites meal!";
         favFoodLists.appendChild(p);
         loader.style.display = 'none';
       }
