@@ -56,6 +56,12 @@ button:hover {
   margin: 0 auto;
   border: 1px solid #333;
   overflow: hidden;
+  position: relative;
+  border-top: 0px;
+  width: 500px;
+  background-color: #333333;
+  color: white;
+
 }
 
 .suggestion {
@@ -67,6 +73,7 @@ button:hover {
 
 .suggestion:hover {
   background-color: #f0f0f0;
+  color: black;
 }
 
 
@@ -144,50 +151,6 @@ button:hover {
 }
 
 
-/* like button */
-.fa-heart-o,
-.fa-heart {
-  font-size: 20px;
-}
-
-.fa-heart-o:hover {
-  color: red;
-}
-
-.fa-heart {
-  color: red;
-}
-
-
-/* Media Queries for Responsiveness */
-@media screen and (max-width: 768px) {
-  /* Adjust styles for smaller screens */
-  .container {
-    flex-direction: column;
-  }
-
-  .logo img {
-    margin-bottom: 10px;
-  }
-
-  nav {
-    margin-top: 20px;
-  }
-
-  #food-data-search {
-    flex-direction: column;
-  }
-
-  #search-meal {
-    width: 100%;
-    max-width: none;
-  }
-
-  #foods-list ul li {
-    width: 100%;
-  }
-}
-
 /* css loader */
 .loader {
   border: 5px solid #f3f3f3; 
@@ -205,6 +168,7 @@ button:hover {
   display: none; 
 }
 
+/* loader spin */
 @keyframes spin {
   0% { transform: rotate(0deg); } 
   100% { transform: rotate(360deg); } 
@@ -311,7 +275,7 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* More Details button on active state (when clicked) */
+/* More Details button on active state */
 .more-details-btn:active {
   background-color: #007bff;
   color: #fff;
@@ -320,13 +284,49 @@ button:hover {
 }
 
 /* Heart Icon */
-.fa-heart {
-  font-size: 20px;
+.fa-heart, .fa-heart-o {
+  font-size: 25px;
   color: #ff0000;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }
-
 .fa-heart:hover {
   color: #c80000;
+}
+
+.fa-heart-o {
+  color : black;
+}
+
+.fa-heart-o:hover {
+  color: #c80000;
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  .container {
+    flex-direction: column;
+  }
+
+  .logo img {
+    margin-bottom: 10px;
+  }
+
+  nav {
+    margin-top: 20px;
+  }
+
+  #food-data-search {
+    flex-direction: column;
+  }
+
+  #search-meal {
+    width: 100%;
+    max-width: none;
+  }
+
+  #foods-list ul li {
+    width: 100%;
+  }
 }

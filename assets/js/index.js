@@ -28,6 +28,7 @@ async function fetchUrl(url) {
 
 // Get food suggestions based on search input
 async function getSuggestion() {
+  document.getElementById('search-suggestions').style.display = "block";
   const suggestDataList = await fetchUrl(foodSearchUrl + searchMealDiv.value);
   return suggestDataList?.meals || [];
 }
@@ -160,17 +161,17 @@ async function searchMeal() {
 // render favourites food list
 async function renderFavouriteMeals(){
   try{
+    loader.style.display = 'block';
     favFoodLists.style.display = 'block';
     foodSearchList.style.display = 'none';
     foodDataSearch.style.display = 'none';
     favFoodLists.innerHTML = '';
-      if(favouriteFoodList){
+      if(favouriteFoodList?.length>0){
           let ul = document.createElement('ul');
           ul.setAttribute('id', 'fav-food');
           favouriteFoodList.forEach( async (id) => {
               let data = await fetchUrl(search_by_id + id);
               if(data){
-                  console.log(data);
                   let meal = data.meals[0];
                   let li = document.createElement('li');
                   li.innerHTML = `<img src="${meal.strMealThumb}">
@@ -184,15 +185,19 @@ async function renderFavouriteMeals(){
                                   </div>`;
             ul.appendChild(li);
               favFoodLists.appendChild(ul);
+              loader.style.display = 'none';
         }     
           });
       }else {
         let p = document.createElement('p');
         p.innerText = "Current there is no favourites meal!";
-        document.body.appendChild(p);
+        favFoodLists.appendChild(p);
+        loader.style.display = 'none';
       }
+      
 
   }catch(error){
+    loader.style.display = 'none';
       console.log(error);
   }
 }
